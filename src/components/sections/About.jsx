@@ -15,6 +15,9 @@ export default function About() {
   // About decorative blob motion
   const blobScale = useTransform(scrollYProgress, [0, 1], [0.95, 1.05]);
   const blobRotate = useTransform(scrollYProgress, [0, 1], [-6, 6]);
+  // Image parallax and subtle scale on scroll
+  const imgY = useTransform(scrollYProgress, [0, 1], [12, -12]);
+  const imgScale = useTransform(scrollYProgress, [0, 1], [0.985, 1.015]);
 
   return (
     <section id="about" ref={aboutRef} className="relative scroll-mt-20">
@@ -29,18 +32,28 @@ export default function About() {
         }}
       />
 
-      <div className="grid gap-12 md:grid-cols-2 md:items-center">
+      <div className="grid gap-8 sm:gap-10 md:gap-12 md:grid-cols-2 md:items-center">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.5 }}
-          className="space-y-6"
+          className="space-y-4 sm:space-y-5"
         >
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          {/* subtle background orbs */}
+          <div aria-hidden className="pointer-events-none absolute -left-6 top-6 h-24 w-24 rounded-full bg-emerald-500/10 blur-xl" />
+          <div aria-hidden className="pointer-events-none absolute left-24 -bottom-6 h-20 w-20 rounded-full bg-blue-500/10 blur-xl" />
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             About Me
           </h2>
-          <div className="space-y-4 text-foreground/80">
+          <motion.div 
+            className="h-0.5 bg-gradient-to-r from-emerald-500 to-emerald-500/40 rounded-full"
+            initial={{ width: 0, opacity: 0 }}
+            whileInView={{ width: 56, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.16,1,0.3,1] }}
+          />
+          <div className="space-y-3 sm:space-y-4 text-foreground/80 leading-relaxed">
             <p>
               I'm a passionate MERN stack developer with a keen eye for design and performance.
               My journey in web development started 2.5 years ago, and I've been in love with
@@ -53,20 +66,63 @@ export default function About() {
             </p>
           </div>
           
-          <div className="pt-2
-          ">
-            <h3 className="mb-3 text-sm font-medium text-foreground/60">Tech I work with:</h3>
-            <div className="flex flex-wrap gap-2">
-              {["JavaScript", "TypeScript", "React", "Next.js", "Node.js", "Express", "MongoDB", "Tailwind CSS", "Framer Motion"].map((tech) => (
-                <span
-                  key={tech}
-                  className="rounded-full border border-border bg-background/60 px-3 py-1 text-xs text-foreground/80"
-                >
-                  {tech}
-                </span>
-              ))}
+          {/* interactive minimal stats */}
+          <div className="pt-1">
+            <div className="grid grid-cols-2 sm:inline-grid sm:grid-cols-3 gap-3">
+              <motion.div 
+                className="relative rounded-lg border border-border/30 bg-background/60 px-3 py-2 text-sm"
+                whileHover={{ scale: 1.04, y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 6 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4 }}
+              >
+                <motion.span
+                  className="absolute -top-2 left-1/2 -translate-x-1/2 h-2 w-2 rounded-full bg-emerald-500"
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                <div className="font-semibold">2.5+ yrs</div>
+                <div className="text-xs text-foreground/60">Experience</div>
+              </motion.div>
+              <motion.div 
+                className="relative rounded-lg border border-border/30 bg-background/60 px-3 py-2 text-sm"
+                whileHover={{ scale: 1.04, y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 6 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: 0.05 }}
+              >
+                <motion.span
+                  className="absolute -top-2 left-1/2 -translate-x-1/2 h-2 w-2 rounded-full bg-blue-500"
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 2.2, repeat: Infinity }}
+                />
+                <div className="font-semibold">15+ projects</div>
+                <div className="text-xs text-foreground/60">Delivered</div>
+              </motion.div>
+              <motion.div 
+                className="relative hidden sm:block rounded-lg border border-border/30 bg-background/60 px-3 py-2 text-sm"
+                whileHover={{ scale: 1.04, y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 6 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                <motion.span
+                  className="absolute -top-2 left-1/2 -translate-x-1/2 h-2 w-2 rounded-full bg-purple-500"
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 2.4, repeat: Infinity }}
+                />
+                <div className="font-semibold">Available</div>
+                <div className="text-xs text-foreground/60">for work</div>
+              </motion.div>
             </div>
           </div>
+          
         </motion.div>
 
         <motion.div
@@ -75,8 +131,9 @@ export default function About() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.5, delay: 0.1 }}
           className="relative"
+          style={{ y: imgY, scale: imgScale }}
         >
-          <div className="relative aspect-[3/4] max-w-[300px] mx-auto">
+          <div className="relative aspect-[3/4] max-w-[300px] sm:max-w-[340px] mx-auto">
             {/* Main frame */}
             <div className="relative h-full w-full group">
               {/* Decorative border with gradient */}
@@ -91,16 +148,23 @@ export default function About() {
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-transparent via-transparent to-background/30 z-10" />
                     
                     <Image
-                      src="/profile.png"
+                      src="/profilee.png"
                       alt="Professional Headshot"
                       fill
-                      className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover object-top transition-transform duration-700 group-hover:scale-105 z-10"
                       sizes="(max-width: 768px) 100vw, 50vw"
                       priority
                     />
                     
                     {/* Subtle grid pattern */}
                     <div className="absolute inset-0 z-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.3)_1px,transparent_1px)] [background-size:24px_24px]" />
+
+                    {/* scan sweep overlay */}
+                    <motion.div 
+                      className="absolute inset-x-0 -top-24 h-24 bg-gradient-to-b from-emerald-400/0 via-emerald-400/15 to-emerald-400/0 mix-blend-screen"
+                      animate={{ y: ["-100%", "120%"] }}
+                      transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+                    />
                   </div>
                 </div>
               </div>

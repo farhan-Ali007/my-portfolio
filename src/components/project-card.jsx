@@ -4,8 +4,10 @@ import Image from "next/image";
 import Tilt from "./motion/tilt";
 import { Badge } from "./ui/badge";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function ProjectCard({ title, description, image, tech = [], href = "#", index = 0 }) {
+  const [loaded, setLoaded] = useState(false);
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -20,13 +22,16 @@ export default function ProjectCard({ title, description, image, tech = [], href
         </div>
         <a href={href} target="_blank" rel="noreferrer" className="block">
           <div className="relative aspect-[16/9] w-full overflow-hidden">
+            {!loaded && <div className="absolute inset-0 animate-pulse bg-foreground/10" />}
             <Image
               src={image}
               alt={title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
               sizes="(min-width: 768px) 50vw, 100vw"
-              priority={false}
+              priority={index === 0}
+              loading={index === 0 ? undefined : "lazy"}
+              onLoadingComplete={() => setLoaded(true)}
             />
           </div>
           <div className="p-4">

@@ -28,7 +28,7 @@ export default function Projects({ selectedTag, setSelectedTag }) {
     },
     {
       title: "Job Board",
-      description: "Job listing platform with advanced filtering, company profiles, and application tracking.",
+      description: "Job listing platform with advanced filtering, interactive layout, company profiles, and application tracking.",
       image: "/jobapp.png",
       tech: ["React", "Node.js", "MongoDB", "Express", "Tailwind"],
       href: "https://job-board-app.vercel.app/",

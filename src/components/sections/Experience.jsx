@@ -41,7 +41,7 @@ export default function Experience() {
   ];
 
   return (
-    <section id="experience" className="scroll-mt-20">
+    <section id="experience" className="relative scroll-mt-20 overflow-hidden">
       <div className="mb-8">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Experience</h2>
         <p className="mt-2 text-foreground/70">
@@ -53,9 +53,11 @@ export default function Experience() {
         {/* Animated progress bar */}
         <div className="absolute left-4 top-0 h-full w-0.5 bg-foreground/10 overflow-hidden">
           <motion.div 
-            className="h-full w-full bg-gradient-to-b from-emerald-500 to-sky-500 origin-top"
+            className="relative h-full w-full bg-gradient-to-b from-emerald-500 to-sky-500 origin-top"
             style={{ scaleY: progress }}
           />
+          {/* glow */}
+          <div className="absolute inset-0 -z-10 blur-md bg-gradient-to-b from-emerald-500/20 to-sky-500/20" />
         </div>
 
         <div className="space-y-12">
@@ -79,7 +81,7 @@ export default function Experience() {
               >
                 {/* Animated dot */}
                 <div 
-                  className="absolute left-0 top-1.5 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-background"
+                  className="absolute left-[1.0625rem] top-1.5 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-background"
                   aria-hidden
                 >
                   <motion.div 
@@ -97,12 +99,24 @@ export default function Experience() {
                 </div>
 
                 <motion.div 
-                  className="rounded-xl border bg-background/60 p-6 backdrop-blur-sm"
+                  className="group relative rounded-xl border border-border/20 bg-background/60 p-6 backdrop-blur-sm"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
+                  whileHover={{ y: -1, scale: 1.003 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 + 0.2 }}
                 >
+                  {/* hover glow */}
+                  <div className="pointer-events-none absolute -inset-1 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10 opacity-0 blur-sm transition-opacity duration-300 group-hover:opacity-70" />
+                  {/* top accent */}
+                  <motion.div
+                    className="absolute left-0 right-0 top-0 h-0.5 bg-gradient-to-r from-emerald-500/70 via-blue-500/60 to-purple-500/70 opacity-80 rounded-t-xl"
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, ease: [0.16,1,0.3,1] }}
+                    style={{ originX: 0 }}
+                  />
                   <div className="flex flex-col justify-between sm:flex-row sm:items-center">
                     <div>
                       <h3 className="text-lg font-medium">{exp.role}</h3>
@@ -116,14 +130,16 @@ export default function Experience() {
                     {exp.points.map((point, i) => (
                       <motion.li 
                         key={i} 
-                        className="flex items-start"
+                        className="group/item relative flex items-start"
                         initial={{ opacity: 0, x: -10 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.1 + i * 0.1 + 0.3 }}
                       >
-                        <span className="mr-2 text-emerald-500">•</span>
-                        <span>{point}</span>
+                        <span className="mr-2 mt-1 inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                        <span className="transition-colors group-hover/item:text-foreground">{point}</span>
+                        {/* underline on hover */}
+                        <span className="absolute bottom-0 left-4 right-0 h-px bg-emerald-500/0 transition-all duration-300 group-hover/item:bg-emerald-500/10" />
                       </motion.li>
                     ))}
                   </ul>

@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 
 export default function ContactCard({ variant = 'default' }) {
   const [copied, setCopied] = useState(false);
-  const email = "farhanali39765500@gmail.com";
+  const email = "your.email@example.com";
 
   const copy = () => {
     navigator.clipboard.writeText(email);
