@@ -1,27 +1,43 @@
 "use client";
 
-import { useState } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, useMotionValue, useTransform, useReducedMotion } from "framer-motion";
 import Magnetic from "../motion/magnetic";
 
 export default function Hero() {
   // Mouse position trackers
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  
+
+  // SSR-safe viewport sizes
+  const [vw, setVw] = useState(1024);
+  const [vh, setVh] = useState(768);
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const setSizes = () => {
+      setVw(window.innerWidth || 1024);
+      setVh(window.innerHeight || 768);
+    };
+    setSizes();
+    window.addEventListener("resize", setSizes);
+    return () => window.removeEventListener("resize", setSizes);
+  }, []);
+
   // Grid movement based on mouse position
-  const gridX = useTransform(mouseX, [0, window.innerWidth], [-10, 10]);
-  const gridY = useTransform(mouseY, [0, window.innerHeight], [-10, 10]);
-  const gridSkew = useTransform(mouseY, [0, window.innerHeight], [0, 0.5]);
-  
+  const gridX = useTransform(mouseX, [0, vw], [-10, 10]);
+  const gridY = useTransform(mouseY, [0, vh], [-10, 10]);
+  const gridSkew = useTransform(mouseY, [0, vh], [0, 0.5]);
+
   // Parallax layers
-  const layer1x = useTransform(mouseX, [0, window.innerWidth], [0, 20]);
-  const layer1y = useTransform(mouseY, [0, window.innerHeight], [0, 20]);
-  const layer2x = useTransform(mouseX, [0, window.innerWidth], [0, -15]);
-  const layer2y = useTransform(mouseY, [0, window.innerHeight], [0, -15]);
-  const layer3x = useTransform(mouseX, [0, window.innerWidth], [0, 10]);
-  const layer3y = useTransform(mouseY, [0, window.innerHeight], [0, 10]);
-  
+  const layer1x = useTransform(mouseX, [0, vw], [0, 20]);
+  const layer1y = useTransform(mouseY, [0, vh], [0, 20]);
+  const layer2x = useTransform(mouseX, [0, vw], [0, -15]);
+  const layer2y = useTransform(mouseY, [0, vh], [0, -15]);
+  const layer3x = useTransform(mouseX, [0, vw], [0, 10]);
+  const layer3y = useTransform(mouseY, [0, vh], [0, 10]);
+
   // Spotlight effect
   const spotX = useMotionValue(0);
   const spotY = useMotionValue(0);
@@ -33,7 +49,7 @@ export default function Hero() {
     spotY.set(clientY);
     mouseX.set(clientX);
     mouseY.set(clientY);
-    setSpotOn(true);
+    if (!prefersReducedMotion && vw >= 768) setSpotOn(true);
   };
 
   const onMouseLeave = () => {
@@ -60,34 +76,34 @@ export default function Hero() {
       <motion.div
         aria-hidden
         className="pointer-events-none absolute -z-10 h-[50vmin] w-[50vmin] rounded-full blur-3xl"
-        style={{ x: layer1x, y: layer1y, background: "radial-gradient(closest-side, rgba(16,185,129,0.20), transparent)" }}
+        style={{ x: prefersReducedMotion ? 0 : layer1x, y: prefersReducedMotion ? 0 : layer1y, background: "radial-gradient(closest-side, var(--accent-1-22), transparent)" }}
       />
       <motion.div
         aria-hidden
         className="pointer-events-none absolute -z-10 h-[45vmin] w-[45vmin] rounded-full blur-3xl"
-        style={{ x: layer2x, y: layer2y, background: "radial-gradient(closest-side, rgba(99,102,241,0.15), transparent)" }}
+        style={{ x: prefersReducedMotion ? 0 : layer2x, y: prefersReducedMotion ? 0 : layer2y, background: "radial-gradient(closest-side, color-mix(in oklab, var(--accent-2) 35%, transparent), transparent)" }}
       />
       <motion.div
         aria-hidden
         className="pointer-events-none absolute -z-10 h-[40vmin] w-[40vmin] rounded-full blur-3xl"
-        style={{ x: layer3x, y: layer3y, background: "radial-gradient(closest-side, rgba(56,189,248,0.12), transparent)" }}
+        style={{ x: prefersReducedMotion ? 0 : layer3x, y: prefersReducedMotion ? 0 : layer3y, background: "radial-gradient(closest-side, color-mix(in oklab, var(--accent-2) 24%, transparent), transparent)" }}
       />
       
       {/* Spotlight */}
       <motion.div
         aria-hidden
         className="pointer-events-none absolute z-0 size-[420px] -translate-x-1/2 -translate-y-1/2 transform rounded-full mix-blend-screen"
-        style={{ left: spotX, top: spotY, background: "radial-gradient(200px circle at center, rgba(16,185,129,0.22), transparent 60%)" }}
-        animate={{ opacity: spotOn ? 0.6 : 0 }}
+        style={{ left: spotX, top: spotY, background: "radial-gradient(200px circle at center, var(--accent-1-22), transparent 60%)" }}
+        animate={{ opacity: prefersReducedMotion || vw < 768 ? 0 : spotOn ? 0.6 : 0 }}
         transition={{ duration: 0.25, ease: "easeOut" }}
       />
       
       {/* Cursor ring */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute z-10 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-emerald-400/40"
-        style={{ left: spotX, top: spotY }}
-        animate={{ opacity: spotOn ? 0.8 : 0 }}
+        className="pointer-events-none absolute z-10 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border"
+        style={{ left: spotX, top: spotY, borderColor: "var(--accent-1-40)" }}
+        animate={{ opacity: prefersReducedMotion || vw < 768 ? 0 : spotOn ? 0.8 : 0 }}
         transition={{ duration: 0.2 }}
       />
       
@@ -103,8 +119,8 @@ export default function Hero() {
           animate={{ backgroundPositionX: "100%" }}
           whileHover={{ scale: 1.02 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 bg-[length:200%_100%] bg-clip-text text-transparent"
-          style={{ fontFamily: "var(--font-space-grotesk)" }}
+          className="bg-[length:200%_100%] bg-clip-text text-transparent"
+          style={{ backgroundImage: "linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-1))", fontFamily: "var(--font-space-grotesk)" }}
         >
           Farhan
         </motion.span>
@@ -143,7 +159,8 @@ export default function Hero() {
         <Magnetic>
           <a
             href="#projects"
-            className="relative overflow-hidden rounded-md bg-emerald-600 px-4 py-2 text-white shadow hover:bg-emerald-500 transition-colors"
+            className="relative overflow-hidden rounded-md px-4 py-2 text-white shadow transition-colors"
+            style={{ backgroundColor: "var(--accent-1)" }}
           >
             <motion.span
               aria-hidden

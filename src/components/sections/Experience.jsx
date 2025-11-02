@@ -53,11 +53,12 @@ export default function Experience() {
         {/* Animated progress bar */}
         <div className="absolute left-4 top-0 h-full w-0.5 bg-foreground/10 overflow-hidden">
           <motion.div 
-            className="relative h-full w-full bg-gradient-to-b from-emerald-500 to-sky-500 origin-top"
+            className="relative h-full w-full origin-top"
+            style={{ background: 'linear-gradient(to bottom, var(--accent-1), var(--accent-2))' }}
             style={{ scaleY: progress }}
           />
           {/* glow */}
-          <div className="absolute inset-0 -z-10 blur-md bg-gradient-to-b from-emerald-500/20 to-sky-500/20" />
+          <div className="absolute inset-0 -z-10 blur-md" style={{ background: 'linear-gradient(to bottom, var(--accent-1-22), color-mix(in oklab, var(--accent-2) 20%, transparent))' }} />
         </div>
 
         <div className="space-y-12">
@@ -85,7 +86,8 @@ export default function Experience() {
                   aria-hidden
                 >
                   <motion.div 
-                    className="h-3 w-3 rounded-full bg-gradient-to-r from-emerald-500 to-sky-500"
+                    className="h-3 w-3 rounded-full"
+                    style={{ background: 'linear-gradient(90deg, var(--accent-1), var(--accent-2))' }}
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
@@ -107,10 +109,11 @@ export default function Experience() {
                   transition={{ delay: index * 0.1 + 0.2 }}
                 >
                   {/* hover glow */}
-                  <div className="pointer-events-none absolute -inset-1 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10 opacity-0 blur-sm transition-opacity duration-300 group-hover:opacity-70" />
+                  <div className="pointer-events-none absolute -inset-1 rounded-2xl opacity-0 blur-sm transition-opacity duration-300 group-hover:opacity-70" style={{ background: 'linear-gradient(90deg, var(--accent-1-22), color-mix(in oklab, var(--accent-2) 18%, transparent))' }} />
                   {/* top accent */}
                   <motion.div
-                    className="absolute left-0 right-0 top-0 h-0.5 bg-gradient-to-r from-emerald-500/70 via-blue-500/60 to-purple-500/70 opacity-80 rounded-t-xl"
+                    className="absolute left-0 right-0 top-0 h-0.5 opacity-80 rounded-t-xl"
+                    style={{ background: 'linear-gradient(90deg, var(--accent-1), var(--accent-2))' }}
                     initial={{ scaleX: 0 }}
                     whileInView={{ scaleX: 1 }}
                     viewport={{ once: true }}
@@ -136,10 +139,10 @@ export default function Experience() {
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.1 + i * 0.1 + 0.3 }}
                       >
-                        <span className="mr-2 mt-1 inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                        <span className="mr-2 mt-1 inline-block h-1.5 w-1.5 rounded-full" style={{ backgroundColor: 'var(--accent-1)' }} />
                         <span className="transition-colors group-hover/item:text-foreground">{point}</span>
                         {/* underline on hover */}
-                        <span className="absolute bottom-0 left-4 right-0 h-px bg-emerald-500/0 transition-all duration-300 group-hover/item:bg-emerald-500/10" />
+                        <span className="absolute bottom-0 left-4 right-0 h-px transition-all duration-300" style={{ background: 'color-mix(in oklab, var(--accent-1) 12%, transparent)' }} />
                       </motion.li>
                     ))}
                   </ul>

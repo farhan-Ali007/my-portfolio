@@ -60,6 +60,7 @@ export default function Contact() {
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [toast, setToast] = useState("");
   const emailAddress = "farhanali39765500@gmail.com";
 
   useEffect(() => {
@@ -87,10 +88,16 @@ export default function Contact() {
     setSuccess(true);
     setForm({ name: "", email: "", message: "" });
     setTimeout(() => setSuccess(false), 2000);
+    setToast("Message sent successfully");
+    setTimeout(() => setToast(""), 1800);
   }
 
   async function copyEmail() {
-    try { await navigator.clipboard.writeText(emailAddress); setSuccess(true); setTimeout(()=>setSuccess(false), 1200);} catch {}
+    try {
+      await navigator.clipboard.writeText(emailAddress);
+      setToast("Email copied to clipboard");
+      setTimeout(() => setToast(""), 1400);
+    } catch {}
   }
 
   return (
@@ -140,7 +147,7 @@ export default function Contact() {
             className="relative group"
           >
             {/* Animated background gradient */}
-            <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-emerald-500/20 via-blue-500/10 to-purple-500/20 opacity-30 blur-xl -z-10"></div>
+            <div className="absolute -inset-0.5 rounded-xl opacity-30 blur-xl -z-10" style={{ background: "linear-gradient(90deg, var(--accent-1-22), color-mix(in oklab, var(--accent-2) 15%, transparent), var(--accent-1-22))" }}></div>
             
             {/* Subtle grid pattern */}
             <div className="absolute inset-0 rounded-xl opacity-10 [background-image:linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] [background-size:24px_24px]"></div>
@@ -152,10 +159,10 @@ export default function Contact() {
               transition={{ delay: 0.3, duration: 0.5 }}
             >
               {/* Animated corner accents */}
-              <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-emerald-500/50 rounded-tl-xl"></div>
-              <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-blue-500/50 rounded-tr-xl"></div>
-              <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-purple-500/50 rounded-bl-xl"></div>
-              <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-emerald-500/50 rounded-br-xl"></div>
+              <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 rounded-tl-xl" style={{ borderColor: "var(--accent-1-40)" }}></div>
+              <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 rounded-tr-xl" style={{ borderColor: "color-mix(in oklab, var(--accent-2) 60%, transparent)" }}></div>
+              <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 rounded-bl-xl" style={{ borderColor: "color-mix(in oklab, var(--accent-2) 45%, transparent)" }}></div>
+              <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 rounded-br-xl" style={{ borderColor: "var(--accent-1-40)" }}></div>
               <motion.h3 
                 className="text-xl font-semibold mb-6 flex items-center gap-2"
                 initial={{ opacity: 0, x: -10 }}
@@ -194,7 +201,7 @@ export default function Contact() {
                         <textarea
                           id={field}
                           rows="4"
-                          className={`w-full px-4 py-3 rounded-lg border bg-background/70 outline-none text-sm transition-all duration-300 placeholder-foreground/50 ${errors.message ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/20' : 'border-border/30 focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 hover:border-emerald-500/50'} text-foreground/90`}
+                          className={`w-full px-4 py-3 rounded-lg border bg-background/70 outline-none text-sm transition-all duration-300 placeholder-foreground/50 ${errors.message ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/20' : 'border-border/30 focus:ring-2 focus:ring-[var(--accent-1-22)] focus:border-[var(--accent-1)] hover:border-[var(--accent-1-40)]'} text-foreground/90`}
                           placeholder={field === 'name' ? 'Your name' : field === 'email' ? 'Your email' : 'Your message'}
                           value={form.message}
                           onChange={(e)=>setForm((f)=>({...f, message: e.target.value}))}
@@ -203,7 +210,7 @@ export default function Contact() {
                         <input
                           type={field === 'email' ? 'email' : 'text'}
                           id={field}
-                          className={`w-full px-4 py-3 rounded-lg border bg-background/70 outline-none text-sm transition-all duration-300 placeholder-foreground/50 text-foreground/90 ${errors[field] ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/20' : 'border-border/30 focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 hover:border-emerald-500/50'}`}
+                          className={`w-full px-4 py-3 rounded-lg border bg-background/70 outline-none text-sm transition-all duration-300 placeholder-foreground/50 text-foreground/90 ${errors[field] ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/20' : 'border-border/30 focus:ring-2 focus:ring-[var(--accent-1-22)] focus:border-[var(--accent-1)] hover:border-[var(--accent-1-40)]'}`}
                           placeholder={field === 'name' ? 'Your name' : 'Your email'}
                           value={form[field]}
                           onChange={(e)=>setForm((f)=>({...f, [field]: e.target.value}))}
@@ -213,7 +220,8 @@ export default function Contact() {
                         <span className="mt-1 block text-xs text-red-500">{errors[field]}</span>
                       )}
                       <motion.div 
-                        className="absolute bottom-0 left-0 w-0 h-0.5 bg-emerald-500"
+                        className="absolute bottom-0 left-0 w-0 h-0.5"
+                        style={{ backgroundColor: 'var(--accent-1)' }}
                         whileFocus={{ width: '100%' }}
                         transition={{ duration: 0.3 }}
                       />
@@ -242,9 +250,10 @@ export default function Contact() {
                         <Check className="ml-2 h-4 w-4 text-emerald-500" />
                       )}
                     </span>
-                    <span className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md"></span>
+                    <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md" style={{ background: 'linear-gradient(90deg, var(--accent-1), color-mix(in oklab, var(--accent-1) 80%, black), var(--accent-1))' }}></span>
                     <motion.span 
-                      className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{ background: 'linear-gradient(90deg, var(--accent-1), color-mix(in oklab, var(--accent-1) 80%, black))' }}
                       initial={{ opacity: 0 }}
                     />
                   </Button>
@@ -287,15 +296,29 @@ export default function Contact() {
           </motion.div>
           {/* Quick links row */}
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <button onClick={copyEmail} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm hover:bg-foreground/5">
-              <Mail className="h-4 w-4 text-emerald-500" /> {emailAddress}
+            <button onClick={copyEmail} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm hover:bg-foreground/5" aria-label="Copy email to clipboard">
+              <Mail className="h-4 w-4" style={{ color: 'var(--accent-1)' }} /> {emailAddress}
             </button>
             <div className="ml-auto flex items-center gap-2">
-              <a href="https://github.com/" target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-foreground/5"><Github className="h-4 w-4" /></a>
-              <a href="https://linkedin.com/" target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-foreground/5"><Linkedin className="h-4 w-4" /></a>
-              <a href="https://facebook.com/" target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-foreground/5"><Facebook className="h-4 w-4" /></a>
+              <a aria-label="Open GitHub" href="https://github.com/" target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-foreground/5"><Github className="h-4 w-4" /></a>
+              <a aria-label="Open LinkedIn" href="https://linkedin.com/" target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-foreground/5"><Linkedin className="h-4 w-4" /></a>
+              <a aria-label="Open Facebook" href="https://facebook.com/" target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full border hover:bg-foreground/5"><Facebook className="h-4 w-4" /></a>
             </div>
           </div>
+          {/* Toast */}
+          <AnimatePresence>
+            {toast && (
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 20, opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 rounded-md border bg-background/90 px-4 py-2 text-sm shadow backdrop-blur"
+              >
+                {toast}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>

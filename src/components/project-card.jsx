@@ -18,7 +18,10 @@ export default function ProjectCard({ title, description, image, tech = [], href
       <Tilt className="group relative overflow-hidden rounded-xl border bg-background/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
         {/* Gradient border glow overlay */}
         <div aria-hidden className="pointer-events-none absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <div className="absolute inset-0 rounded-xl p-[1px] [background:linear-gradient(90deg,rgba(16,185,129,.35),rgba(56,189,248,.25),rgba(139,92,246,.25))] [mask:linear-gradient(#000_0_0)_content-box,linear-gradient(#000_0_0)] [mask-composite:exclude]" />
+          <div
+            className="absolute inset-0 rounded-xl p-[1px] [mask:linear-gradient(#000_0_0)_content-box,linear-gradient(#000_0_0)] [mask-composite:exclude]"
+            style={{ background: "linear-gradient(90deg, var(--accent-1-40), var(--accent-2), var(--accent-1-22))" }}
+          />
         </div>
         <a href={href} target="_blank" rel="noreferrer" className="block">
           <div className="relative aspect-[16/9] w-full overflow-hidden">

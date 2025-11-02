@@ -28,7 +28,7 @@ export default function About() {
         style={{
           scale: blobScale,
           rotate: blobRotate,
-          background: "radial-gradient(circle at 30% 40%, rgba(16, 185, 129, 0.2), transparent 50%), radial-gradient(circle at 70% 60%, rgba(99, 102, 241, 0.15), transparent 50%)",
+          background: "radial-gradient(circle at 30% 40%, var(--accent-1-22), transparent 50%), radial-gradient(circle at 70% 60%, color-mix(in oklab, var(--accent-2) 24%, transparent), transparent 50%)",
         }}
       />
 
@@ -41,13 +41,14 @@ export default function About() {
           className="space-y-4 sm:space-y-5"
         >
           {/* subtle background orbs */}
-          <div aria-hidden className="pointer-events-none absolute -left-6 top-6 h-24 w-24 rounded-full bg-emerald-500/10 blur-xl" />
-          <div aria-hidden className="pointer-events-none absolute left-24 -bottom-6 h-20 w-20 rounded-full bg-blue-500/10 blur-xl" />
+          <div aria-hidden className="pointer-events-none absolute -left-6 top-6 h-24 w-24 rounded-full blur-xl" style={{ backgroundColor: 'var(--accent-1-22)' }} />
+          <div aria-hidden className="pointer-events-none absolute left-24 -bottom-6 h-20 w-20 rounded-full blur-xl" style={{ backgroundColor: 'color-mix(in oklab, var(--accent-2) 20%, transparent)' }} />
           <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             About Me
           </h2>
           <motion.div 
-            className="h-0.5 bg-gradient-to-r from-emerald-500 to-emerald-500/40 rounded-full"
+            className="h-0.5 rounded-full"
+            style={{ background: 'linear-gradient(90deg, var(--accent-1), color-mix(in oklab, var(--accent-1) 40%, transparent))' }}
             initial={{ width: 0, opacity: 0 }}
             whileInView={{ width: 56, opacity: 1 }}
             viewport={{ once: true }}
@@ -79,7 +80,8 @@ export default function About() {
                 transition={{ duration: 0.4 }}
               >
                 <motion.span
-                  className="absolute -top-2 left-1/2 -translate-x-1/2 h-2 w-2 rounded-full bg-emerald-500"
+                  className="absolute -top-2 left-1/2 -translate-x-1/2 h-2 w-2 rounded-full"
+                  style={{ backgroundColor: 'var(--accent-1)' }}
                   animate={{ opacity: [0.6, 1, 0.6] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />
@@ -96,7 +98,8 @@ export default function About() {
                 transition={{ duration: 0.45, delay: 0.05 }}
               >
                 <motion.span
-                  className="absolute -top-2 left-1/2 -translate-x-1/2 h-2 w-2 rounded-full bg-blue-500"
+                  className="absolute -top-2 left-1/2 -translate-x-1/2 h-2 w-2 rounded-full"
+                  style={{ backgroundColor: 'var(--accent-2)' }}
                   animate={{ opacity: [0.6, 1, 0.6] }}
                   transition={{ duration: 2.2, repeat: Infinity }}
                 />
@@ -113,7 +116,8 @@ export default function About() {
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
                 <motion.span
-                  className="absolute -top-2 left-1/2 -translate-x-1/2 h-2 w-2 rounded-full bg-purple-500"
+                  className="absolute -top-2 left-1/2 -translate-x-1/2 h-2 w-2 rounded-full"
+                  style={{ backgroundColor: 'color-mix(in oklab, var(--accent-2) 65%, var(--accent-1))' }}
                   animate={{ opacity: [0.6, 1, 0.6] }}
                   transition={{ duration: 2.4, repeat: Infinity }}
                 />
@@ -137,7 +141,7 @@ export default function About() {
             {/* Main frame */}
             <div className="relative h-full w-full group">
               {/* Decorative border with gradient */}
-              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-br from-emerald-400/30 via-blue-400/20 to-purple-400/30 p-0.5">
+              <div className="absolute -inset-1 rounded-3xl p-0.5" style={{ background: 'linear-gradient(135deg, color-mix(in oklab, var(--accent-1) 40%, transparent), color-mix(in oklab, var(--accent-2) 30%, transparent))' }}>
                 <div className="relative h-full w-full overflow-hidden rounded-3xl bg-background/80 backdrop-blur-sm">
                   {/* Pattern overlay */}
                   <div className="absolute inset-0 opacity-10 [mask-image:radial-gradient(ellipse_at_center,white,transparent_70%)]" />
@@ -161,7 +165,8 @@ export default function About() {
 
                     {/* scan sweep overlay */}
                     <motion.div 
-                      className="absolute inset-x-0 -top-24 h-24 bg-gradient-to-b from-emerald-400/0 via-emerald-400/15 to-emerald-400/0 mix-blend-screen"
+                      className="absolute inset-x-0 -top-24 h-24 mix-blend-screen"
+                      style={{ background: 'linear-gradient(to bottom, transparent, color-mix(in oklab, var(--accent-1) 18%, transparent), transparent)' }}
                       animate={{ y: ["-100%", "120%"] }}
                       transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
                     />
@@ -170,20 +175,20 @@ export default function About() {
               </div>
               
               {/* Floating elements */}
-              <div className="absolute -right-4 -top-4 h-20 w-20 animate-float rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent blur-xl" />
-              <div className="absolute -bottom-6 -left-6 h-28 w-28 animate-float rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-xl" style={{ animationDelay: '1.5s' }} />
+              <div className="absolute -right-4 -top-4 h-20 w-20 animate-float rounded-full blur-xl" style={{ background: 'radial-gradient(closest-side, var(--accent-1-22), transparent)' }} />
+              <div className="absolute -bottom-6 -left-6 h-28 w-28 animate-float rounded-full blur-xl" style={{ background: 'radial-gradient(closest-side, color-mix(in oklab, var(--accent-2) 20%, transparent), transparent)' , animationDelay: '1.5s' }} />
               
               {/* Corner accents */}
-              <div className="absolute left-2 top-2 h-6 w-6 rounded-tl-2xl border-l-2 border-t-2 border-emerald-400/50 transition-all duration-300 group-hover:border-emerald-400/80" />
-              <div className="absolute right-2 top-2 h-6 w-6 rounded-tr-2xl border-r-2 border-t-2 border-blue-400/50 transition-all duration-300 group-hover:border-blue-400/80" />
-              <div className="absolute bottom-2 left-2 h-6 w-6 rounded-bl-2xl border-b-2 border-l-2 border-blue-400/30 transition-all duration-300 group-hover:border-blue-400/60" />
-              <div className="absolute bottom-2 right-2 h-6 w-6 rounded-br-2xl border-b-2 border-r-2 border-emerald-400/30 transition-all duration-300 group-hover:border-emerald-400/60" />
+              <div className="absolute left-2 top-2 h-6 w-6 rounded-tl-2xl border-l-2 border-t-2 transition-all duration-300" style={{ borderColor: 'var(--accent-1-40)' }} />
+              <div className="absolute right-2 top-2 h-6 w-6 rounded-tr-2xl border-r-2 border-t-2 transition-all duration-300" style={{ borderColor: 'color-mix(in oklab, var(--accent-2) 50%, transparent)' }} />
+              <div className="absolute bottom-2 left-2 h-6 w-6 rounded-bl-2xl border-b-2 border-l-2 transition-all duration-300" style={{ borderColor: 'color-mix(in oklab, var(--accent-2) 35%, transparent)' }} />
+              <div className="absolute bottom-2 right-2 h-6 w-6 rounded-br-2xl border-b-2 border-r-2 transition-all duration-300" style={{ borderColor: 'var(--accent-1-40)' }} />
               
               {/* Glow effect */}
-              <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-blue-500/10 to-purple-500/10 opacity-50 blur-2xl transition-all duration-700 group-hover:opacity-70 group-hover:blur-3xl" />
+              <div className="absolute inset-0 -z-10 rounded-3xl opacity-50 blur-2xl transition-all duration-700 group-hover:opacity-70 group-hover:blur-3xl" style={{ background: 'linear-gradient(135deg, var(--accent-1-22), color-mix(in oklab, var(--accent-2) 18%, transparent))' }} />
               
               {/* Animated border highlight */}
-              <div className="absolute inset-0 rounded-3xl border-2 border-transparent [background:linear-gradient(90deg,transparent,transparent),linear-gradient(90deg,rgba(16,185,129,0.2),rgba(59,130,246,0.2),rgba(168,85,247,0.2))] bg-origin-border [mask:linear-gradient(#fff_0_0)padding-box,linear-gradient(#fff_0_0)] [-webkit-mask-composite:destination-out] [mask-composite:exclude] group-hover:opacity-100 opacity-0 transition-opacity duration-500" />
+              <div className="absolute inset-0 rounded-3xl border-2 border-transparent bg-origin-border [mask:linear-gradient(#fff_0_0)padding-box,linear-gradient(#fff_0_0)] [-webkit-mask-composite:destination-out] [mask-composite:exclude] group-hover:opacity-100 opacity-0 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg,transparent,transparent),linear-gradient(90deg, color-mix(in oklab, var(--accent-1) 35%, transparent), color-mix(in oklab, var(--accent-2) 30%, transparent))' }} />
             </div>
           </div>
         </motion.div>

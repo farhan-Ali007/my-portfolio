@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import ThemeToggle from "./theme-toggle";
+import PaletteSwitcher from "./palette-switcher";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Sparkles } from "lucide-react";
@@ -27,14 +28,18 @@ export default function Navbar() {
     const sections = links.map((l) => document.querySelector(l.href));
     const io = new IntersectionObserver(
       (entries) => {
+        // If near top, keep Home active
+        if (window.scrollY < 20) {
+          setActive('#home');
+          return;
+        }
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target?.id) {
-          setActive(`#${visible.target.id}`);
-        }
+        if (visible?.target?.id) setActive(`#${visible.target.id}`);
       },
-      { rootMargin: "-40% 0px -50% 0px", threshold: [0.1, 0.25, 0.5, 0.75] }
+      // Activate later (center-ish) so About doesn't win at the very top
+      { rootMargin: "-20% 0px -60% 0px", threshold: [0.1, 0.25, 0.5, 0.75] }
     );
     sections.forEach((s) => s && io.observe(s));
     return () => io.disconnect();
@@ -59,13 +64,20 @@ export default function Navbar() {
     const onResize = () => recalcUnderline();
     window.addEventListener("resize", onResize);
     window.addEventListener("scroll", onResize, { passive: true });
-    const onScrollY = () => setScrolled(window.scrollY > 80);
+    const onScrollY = () => {
+      setScrolled(window.scrollY > 80);
+      if (window.scrollY < 20) setActive('#home');
+    };
     onScrollY();
     window.addEventListener("scroll", onScrollY, { passive: true });
+    // Sync with hash changes (e.g., clicking Home)
+    const onHash = () => setActive(window.location.hash || '#home');
+    window.addEventListener('hashchange', onHash);
     return () => {
       window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", onResize);
       window.removeEventListener("scroll", onScrollY);
+      window.removeEventListener('hashchange', onHash);
     };
   }, [recalcUnderline]);
 
@@ -84,7 +96,7 @@ export default function Navbar() {
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
               style={{ fontFamily: "var(--font-space-grotesk)" }}
-              className="inline-block translate-z-0 transform-gpu text-emerald-600 text-2xl md:text-3xl tracking-tight drop-shadow-[0_1px_0_rgba(0,0,0,0.05)]"
+              className="inline-block translate-z-0 transform-gpu text-2xl md:text-3xl tracking-tight drop-shadow-[0_1px_0_rgba(0,0,0,0.05)] text-[var(--accent-1)]"
             >
               Farhan
             </motion.span>
@@ -92,7 +104,7 @@ export default function Navbar() {
               initial={{ opacity: 0, x: -4, rotate: -10 }}
               whileHover={{ opacity: 1, x: 4, rotate: 0 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="ml-1 inline-flex h-4 w-4 items-center justify-center text-emerald-500/80 group-hover:text-emerald-500"
+              className="ml-1 inline-flex h-4 w-4 items-center justify-center text-[var(--accent-1)] opacity-80 group-hover:opacity-100"
             >
               <Sparkles className="h-3.5 w-3.5" />
             </motion.span>
@@ -102,7 +114,8 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               whileHover={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
-              className="pointer-events-none absolute -inset-x-2 -bottom-3 h-3 rounded-full blur-md bg-gradient-to-r from-emerald-500/30 via-sky-500/25 to-violet-500/25"
+              className="pointer-events-none absolute -inset-x-2 -bottom-3 h-3 rounded-full blur-md"
+              style={{ background: "linear-gradient(90deg, var(--accent-1-40), var(--accent-2))" }}
             />
           </div>
         </Link>
@@ -126,19 +139,22 @@ export default function Navbar() {
           ))}
           <motion.div
             aria-hidden
-            className="absolute -bottom-[7px] h-[2px] rounded bg-gradient-to-r from-emerald-500 via-sky-500 to-violet-500"
+            className="absolute -bottom-[7px] h-[2px] rounded"
+            style={{ background: "linear-gradient(90deg, var(--accent-1), var(--accent-2))" }}
             animate={{ left: underline.left, width: underline.width }}
             transition={{ type: "spring", stiffness: 500, damping: 35 }}
           />
           <motion.div
             aria-hidden
-            className="pointer-events-none absolute -top-2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-emerald-500"
+            className="pointer-events-none absolute -top-2 h-1.5 w-1.5 -translate-x-1/2 rounded-full"
+            style={{ backgroundColor: "var(--accent-1)" }}
             animate={{ left: underline.center }}
             transition={{ type: "spring", stiffness: 500, damping: 35 }}
           />
         </nav>
         <div className="flex items-center gap-2">
           <ThemeToggle />
+          <PaletteSwitcher />
           {/* Mobile hamburger */}
           <button
             className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md border hover:bg-foreground/5"
@@ -167,7 +183,7 @@ export default function Navbar() {
             transition={{ duration: 0.28, ease: 'easeOut' }}
           >
             {/* gradient bar */}
-            <div aria-hidden className="h-0.5 w-full bg-gradient-to-r from-emerald-500 via-sky-500 to-violet-500" />
+            <div aria-hidden className="h-0.5 w-full" style={{ background: "linear-gradient(90deg, var(--accent-1), var(--accent-2))" }} />
             <ul className="mx-auto max-w-6xl px-4 py-3 space-y-1">
               {links.map((l, idx) => (
                 <motion.li

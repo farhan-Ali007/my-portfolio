@@ -21,7 +21,7 @@ export default function ContactCard({ variant = 'default' }) {
         <div className="mt-3 rounded-lg border p-3">
           <div className="flex flex-wrap items-center gap-2">
             <div className="flex min-w-0 flex-1 items-center gap-2 text-sm">
-              <Mail className="h-4 w-4 text-emerald-600" />
+              <Mail className="h-4 w-4" style={{ color: 'var(--accent-1)' }} />
               <span className="truncate">{email}</span>
             </div>
             <button
@@ -80,7 +80,7 @@ export default function ContactCard({ variant = 'default' }) {
         aria-label="Copy email to clipboard"
       >
         {copied ? (
-          <Check className="h-4 w-4 text-emerald-600" />
+          <Check className="h-4 w-4" style={{ color: 'var(--accent-1)' }} />
         ) : (
           <Copy className="h-4 w-4" />
         )}
