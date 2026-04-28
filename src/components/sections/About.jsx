@@ -152,7 +152,7 @@ export default function About() {
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-transparent via-transparent to-background/30 z-10" />
                     
                     <Image
-                      src="/profilee.png"
+                      src="/profile.jpeg"
                       alt="Professional Headshot"
                       fill
                       className="object-cover object-top transition-transform duration-700 group-hover:scale-105 z-10"

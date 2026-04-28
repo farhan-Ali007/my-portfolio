@@ -5,7 +5,7 @@ import ThemeToggle from "./theme-toggle";
 import PaletteSwitcher from "./palette-switcher";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Code , CodeXml } from "lucide-react";
 import Magnetic from "./motion/magnetic";
 import { Menu, X } from "lucide-react";
 
@@ -92,14 +92,13 @@ export default function Navbar() {
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
         <Link href="#home" className="font-semibold group relative" aria-label="Farhan home link">
           <div className="relative inline-flex items-center">
-            <motion.span
+            <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              style={{ fontFamily: "var(--font-space-grotesk)" }}
               className="inline-block translate-z-0 transform-gpu text-2xl md:text-3xl tracking-tight drop-shadow-[0_1px_0_rgba(0,0,0,0.05)] text-[var(--accent-1)]"
             >
-              Farhan
-            </motion.span>
+              <CodeXml className="h-8 w-8 md:h-10 md:w-10" />
+            </motion.div>
             <motion.span
               initial={{ opacity: 0, x: -4, rotate: -10 }}
               whileHover={{ opacity: 1, x: 4, rotate: 0 }}

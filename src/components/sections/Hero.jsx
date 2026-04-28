@@ -61,7 +61,7 @@ export default function Hero() {
       id="home"
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center"
+      className="relative min-h-[80vh] md:min-h-screen flex flex-col items-center justify-center px-6 text-center"
     >
       {/* Subtle grid background */}
       <motion.div

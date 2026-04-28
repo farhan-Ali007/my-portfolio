@@ -255,10 +255,9 @@ export default function PaletteSwitcher() {
         setCustomA1(a1);
         setCustomA2(a2);
         applyCustom(a1, a2);
-        setIdx(0); // idx not used for custom
-      } catch {
+      } catch (error) {
+        console.warn('Failed to load custom palette:', error);
         applyPreset(PRESETS[0]);
-        setIdx(0);
       }
     } else {
       const i = saved ? PRESETS.findIndex((p) => p.key === saved) : -1;
